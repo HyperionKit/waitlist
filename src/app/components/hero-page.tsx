@@ -9,7 +9,9 @@ export default function Web3Hero() {
   const [walletAddress, setWalletAddress] = useState('');
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -95,7 +97,48 @@ export default function Web3Hero() {
     }
 
     setError('');
-    alert(`🎉 Spot secured!\n\nEmail: ${email}\nWallet: ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}\n\nYou'll receive early access details soon!`);
+    setSuccess(false);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          walletAddress: walletAddress,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Failed to secure spot. Please try again.');
+        return;
+      }
+
+      // Success
+      setSuccess(true);
+      setError('');
+      
+      // Show success message
+      setTimeout(() => {
+        alert(`🎉 Spot secured!\n\nEmail: ${email}\nWallet: ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}\n\nCheck your email for confirmation!`);
+        
+        // Optional: Reset form after success
+        setEmail('');
+        setIsWalletConnected(false);
+        setWalletAddress('');
+        setSuccess(false);
+      }, 100);
+    } catch (err) {
+      setError('Network error. Please check your connection and try again.');
+      console.error('Error securing spot:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const formatAddress = (address) => {
@@ -154,6 +197,13 @@ export default function Web3Hero() {
         <p className="text-lg md:text-xl text-slate-400/90 mb-12 max-w-2xl leading-relaxed font-light">
           Experience Hyperkit Studio before anyone else. Join the waitlist for early access to the next generation of on-chain builder tools.
         </p>
+
+        {/* Success message */}
+        {success && (
+          <div className="w-full max-w-md mb-4 bg-green-500/10 border border-green-500/30 rounded-xl p-4">
+            <p className="text-green-400 text-sm">✅ Spot secured! Check your email for confirmation.</p>
+          </div>
+        )}
 
         {/* Error message */}
         {error && (
@@ -216,10 +266,23 @@ export default function Web3Hero() {
 
               <button 
                 onClick={handleSecureSpot}
-                className="group flex-[1.5] py-3.5 px-4 bg-white text-black rounded-xl text-base font-semibold hover:bg-purple-50 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(168,85,247,0.4)]"
+                disabled={isSubmitting}
+                className="group flex-[1.5] py-3.5 px-4 bg-white text-black rounded-xl text-base font-semibold hover:bg-purple-50 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span>Secure your spot</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                {isSubmitting ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Securing...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Secure your spot</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  </>
+                )}
               </button>
             </div>
           </div>
