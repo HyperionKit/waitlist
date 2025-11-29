@@ -110,7 +110,7 @@ const WaitlistPerks = () => {
     {
       icon: Network,
       title: "Integrations",
-      description: "First to deploy on Hyperion, Mantle, Base, and Avalanche using our advanced testnet tools.",
+      description: "First to deploy on Hyperion, Metis, Mantle and Avalanche using our advanced testnet tools.",
       color: "indigo",
       iconColor: "text-indigo-400",
       iconBg: "bg-indigo-500/10",
