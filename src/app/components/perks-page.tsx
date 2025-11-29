@@ -1,117 +1,168 @@
 import React from 'react';
-import { Zap, Bot, BadgeCheck , Percent, Users, Map, Coins, Share2, Network } from 'lucide-react';
+import { Zap, Bot, BadgeCheck, Percent, Users, Map, Coins, Share2, Network } from 'lucide-react';
 
 const WaitlistPerks = () => {
   const perks = [
     {
-      icon: <Zap className="w-6 h-6 text-[#C084FC]" />,
+      icon: Zap,
       title: "Guaranteed Access",
       description: "Be the first to enter Hyperkit Studio before public launch via our limited beta waves.",
-      gradient: "from-[#0E0E11] via-transparent to-purple-900/60",
-      iconBg: "bg-purple-900/50",
-      border: "border-gray-800/70"
+      color: "purple",
+      iconColor: "text-purple-400",
+      iconBg: "bg-purple-500/10",
+      ring: "ring-purple-500/20",
+      hoverBorder: "hover:border-purple-500/40",
+      hoverShadow: "hover:shadow-[0_20px_60px_-10px_rgba(126,34,206,0.3)]",
+      gradientOverlay: "from-transparent via-transparent to-purple-900/20",
+      bottomGlow: "bg-purple-600/20 group-hover:bg-purple-500/30"
     },
     {
-      icon: <Bot className="w-6 h-6 text-[#60A5FA]" />,
+      icon: Bot,
       title: "Priority AI Access",
       description: "Get priority access to new autonomous AI agents, templates, and multi-chain features.",
-      gradient: "from-[#0E0E11] via-transparent to-blue-900/60",
-      iconBg: "bg-blue-900/50",
-      border: "border-gray-800/70"
+      color: "blue",
+      iconColor: "text-blue-400",
+      iconBg: "bg-blue-500/10",
+      ring: "ring-blue-500/20",
+      hoverBorder: "hover:border-blue-500/40",
+      hoverShadow: "hover:shadow-[0_20px_60px_-10px_rgba(59,130,246,0.3)]",
+      gradientOverlay: "from-transparent via-transparent to-blue-900/20",
+      bottomGlow: "bg-blue-600/20 group-hover:bg-blue-500/30"
     },
     {
-      icon: <BadgeCheck  className="w-6 h-6 text-[#FBBF24]" />,
+      icon: BadgeCheck,
       title: "Founding Status",
       description: 'Exclusive "Founding Builder" profile badge in-app and a special role in our Discord.',
-      gradient: "from-[#0E0E11] via-transparent to-amber-900/60",
-      iconBg: "bg-amber-900/50 shadow-lg shadow-amber-900/30",
-      border: "border-gray-800/70"
+      color: "amber",
+      iconColor: "text-amber-400",
+      iconBg: "bg-amber-500/10",
+      ring: "ring-amber-500/20",
+      hoverBorder: "hover:border-amber-500/40",
+      hoverShadow: "hover:shadow-[0_20px_60px_-10px_rgba(245,158,11,0.25)]",
+      gradientOverlay: "from-transparent via-transparent to-amber-900/20",
+      bottomGlow: "bg-amber-600/20 group-hover:bg-amber-500/30"
     },
     {
-      icon: <Percent className="w-6 h-6 text-[#34D399]" />,
+      icon: Percent,
       title: "Exclusive Discounts",
       description: "Waitlist-only discounts or extended free trial with extra usage credits for the first months.",
-      gradient: "from-[#0E0E11] via-transparent to-emerald-900/60",
-      iconBg: "bg-emerald-900/50",
-      border: "border-gray-800/70"
+      color: "emerald",
+      iconColor: "text-emerald-400",
+      iconBg: "bg-emerald-500/10",
+      ring: "ring-emerald-500/20",
+      hoverBorder: "hover:border-emerald-500/40",
+      hoverShadow: "hover:shadow-[0_20px_60px_-10px_rgba(16,185,129,0.3)]",
+      gradientOverlay: "from-transparent via-transparent to-emerald-900/20",
+      bottomGlow: "bg-emerald-600/20 group-hover:bg-emerald-500/30"
     },
     {
-      icon: <Users className="w-6 h-6 text-[#FB7185]" />,
+      icon: Users,
       title: "Private Sessions",
       description: "Invitation to private office hours, workshops, and behind-the-scenes dev updates.",
-      gradient: "from-[#0E0E11] via-transparent to-rose-900/60",
-      iconBg: "bg-rose-900/50",
-      border: "border-gray-800/70"
+      color: "rose",
+      iconColor: "text-rose-400",
+      iconBg: "bg-rose-500/10",
+      ring: "ring-rose-500/20",
+      hoverBorder: "hover:border-rose-500/40",
+      hoverShadow: "hover:shadow-[0_20px_60px_-10px_rgba(244,63,94,0.3)]",
+      gradientOverlay: "from-transparent via-transparent to-rose-900/20",
+      bottomGlow: "bg-rose-600/20 group-hover:bg-rose-500/30"
     },
     {
-      icon: <Map className="w-6 h-6 text-[#22D3EE]" />,
+      icon: Map,
       title: "Shape the Roadmap",
       description: "Direct line to the core team via priority feedback calls and surveys to shape the product.",
-      gradient: "from-[#0E0E11] via-transparent to-cyan-900/60",
-      iconBg: "bg-cyan-900/50",
-      border: "border-gray-800/70"
+      color: "cyan",
+      iconColor: "text-cyan-400",
+      iconBg: "bg-cyan-500/10",
+      ring: "ring-cyan-500/20",
+      hoverBorder: "hover:border-cyan-500/40",
+      hoverShadow: "hover:shadow-[0_20px_60px_-10px_rgba(6,182,212,0.3)]",
+      gradientOverlay: "from-transparent via-transparent to-cyan-900/20",
+      bottomGlow: "bg-cyan-600/20 group-hover:bg-cyan-500/30"
     },
     {
-      icon: <Coins className="w-6 h-6 text-[#FACC15]" />,
+      icon: Coins,
       title: "On-Chain Rewards",
       description: "Eligibility for future NFTs or loyalty points recognizing you as an early adopter.",
-      gradient: "from-[#0E0E11] via-transparent to-yellow-900/60",
-      iconBg: "bg-yellow-900/50",
-      border: "border-gray-800/70"
+      color: "yellow",
+      iconColor: "text-yellow-400",
+      iconBg: "bg-yellow-500/10",
+      ring: "ring-yellow-500/20",
+      hoverBorder: "hover:border-yellow-500/40",
+      hoverShadow: "hover:shadow-[0_20px_60px_-10px_rgba(234,179,8,0.25)]",
+      gradientOverlay: "from-transparent via-transparent to-yellow-900/20",
+      bottomGlow: "bg-yellow-600/20 group-hover:bg-yellow-500/30"
     },
     {
-      icon: <Share2 className="w-6 h-6 text-[#F472B6]" />,
+      icon: Share2,
       title: "Referral Perks",
       description: "Move up the queue and unlock higher-tier rewards by inviting other builders.",
-      gradient: "from-[#0E0E11] via-transparent to-fuchsia-900/60",
-      iconBg: "bg-fuchsia-900/50",
-      border: "border-gray-800/70"
+      color: "pink",
+      iconColor: "text-pink-400",
+      iconBg: "bg-pink-500/10",
+      ring: "ring-pink-500/20",
+      hoverBorder: "hover:border-pink-500/40",
+      hoverShadow: "hover:shadow-[0_20px_60px_-10px_rgba(236,72,153,0.3)]",
+      gradientOverlay: "from-transparent via-transparent to-pink-900/20",
+      bottomGlow: "bg-pink-600/20 group-hover:bg-pink-500/30"
     },
     {
-      icon: <Network className="w-6 h-6 text-[#818CF8]" />,
+      icon: Network,
       title: "Integrations",
       description: "First to deploy on Hyperion, Mantle, Base, and Avalanche using our advanced testnet tools.",
-      gradient: "from-[#0E0E11] via-transparent to-indigo-900/60",
-      iconBg: "bg-indigo-900/50",
-      border: "border-gray-800/70"
+      color: "indigo",
+      iconColor: "text-indigo-400",
+      iconBg: "bg-indigo-500/10",
+      ring: "ring-indigo-500/20",
+      hoverBorder: "hover:border-indigo-500/40",
+      hoverShadow: "hover:shadow-[0_20px_60px_-10px_rgba(99,102,241,0.3)]",
+      gradientOverlay: "from-transparent via-transparent to-indigo-900/20",
+      bottomGlow: "bg-indigo-600/20 group-hover:bg-indigo-500/30"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12 sm:mb-16">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
-            Waitlist <span className="text-purple-500">Perks</span>
-          </h1>
-          <p className="text-gray-400 text-base sm:text-lg px-4">
-            Unlock exclusive benefits designed for early adopters and power users.
-          </p>
-        </div>
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      {/* Header */}
+      <div className="mb-16 text-center">
+        <h2 className="text-3xl md:text-4xl font-semibold text-white mb-4 drop-shadow-lg tracking-tight">
+          Waitlist <span className="text-purple-400">Perks</span>
+        </h2>
+        <p className="text-slate-400 max-w-xl mx-auto">
+          Unlock exclusive benefits designed for early adopters and power users.
+        </p>
+      </div>
 
-        {/* Perks Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {perks.map((perk, index) => (
+      {/* Perks Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+        {perks.map((perk, index) => {
+          const IconComponent = perk.icon;
+          return (
             <div
               key={index}
-              className={`relative rounded-2xl border ${perk.border} bg-gradient-to-b ${perk.gradient} p-5 sm:p-6 backdrop-blur-sm transition-all duration-500 hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.4)] hover:-translate-y-2`}
+              className={`group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-white/5 bg-[#0e0e11] p-8 transition-all duration-500 hover:-translate-y-1 ${perk.hoverBorder} ${perk.hoverShadow}`}
             >
-              {/* Icon */}
-              <div className={`${perk.iconBg} w-12 h-12 rounded-xl flex items-center justify-center mb-4 sm:mb-6`}>
-                {perk.icon}
+              {/* Bottom Gradient Glow */}
+              <div className={`pointer-events-none absolute inset-0 bg-gradient-to-b ${perk.gradientOverlay} opacity-0 transition-opacity duration-500 group-hover:opacity-100`}></div>
+              
+              {/* Bottom Light Source */}
+              <div className={`pointer-events-none absolute -bottom-16 left-1/2 h-40 w-full -translate-x-1/2 blur-[50px] transition-all duration-500 ${perk.bottomGlow}`}></div>
+              
+              <div className="relative z-10">
+                <div className={`mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl ${perk.iconBg} ${perk.iconColor} ring-1 ring-inset ${perk.ring} transition-colors group-hover:${perk.iconBg.replace('/10', '/20')} shadow-[0_0_20px_-5px_rgba(168,85,247,0.4)]`}>
+                  <IconComponent className="h-6 w-6" />
+                </div>
+                <h3 className="text-xl font-medium text-white mb-3 tracking-tight">
+                  {perk.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-slate-400">
+                  {perk.description}
+                </p>
               </div>
-
-              {/* Content */}
-              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">
-                {perk.title}
-              </h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                {perk.description}
-              </p>
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </div>
   );
