@@ -12,6 +12,17 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // Initialize Resend if API key is provided
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
+// Helper function to get app URL with smart fallback
+function getAppUrl(): string {
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    return process.env.NEXT_PUBLIC_APP_URL;
+  }
+  // Fallback based on environment
+  return process.env.NODE_ENV === 'production' || process.env.VERCEL === '1'
+    ? 'https://waitlist.hyperionkit.xyz'
+    : 'http://localhost:3000';
+}
+
 // Email template functions - defined before POST handler to avoid reference errors
 function generateConfirmationEmail(
   email: string,
@@ -21,8 +32,8 @@ function generateConfirmationEmail(
 ): string {
   const shortWallet = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
   
-  // Get app URL for logo (use your production domain in production)
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  // Get app URL with smart fallback (production or localhost)
+  const appUrl = getAppUrl();
   const logoUrl = `${appUrl}/logo/brand/hyperkit/Hyperkit-logo.png`;
   
   // Add tracking parameters to confirmation link
@@ -426,17 +437,45 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Automatically add to newsletter (non-blocking - don't fail if this fails)
+    try {
+      const { error: newsletterError } = await supabase
+        .from('newsletter')
+        .upsert({
+          email: normalizedEmail,
+          status: 'active',
+          source: 'waitlist',
+          // subscribed_at will default to now() if not provided
+          // unsubscribed_at will be null for new subscriptions
+        }, {
+          onConflict: 'email', // Handle duplicate emails gracefully
+          ignoreDuplicates: false // Update existing records
+        });
+
+      if (newsletterError) {
+        // Log error but don't fail the waitlist signup
+        console.error('Failed to add to newsletter (non-critical):', newsletterError);
+      } else {
+        console.log('Successfully added to newsletter:', normalizedEmail);
+      }
+    } catch (newsletterErr) {
+      console.error('Error adding to newsletter (non-critical):', newsletterErr);
+      // Don't throw - continue with waitlist signup
+    }
+
     // Send confirmation email
     if (resend && entry) {
       try {
-        const confirmationUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://waitlist.hyperionkit.xyz'}/api/confirm?token=${entry.confirmation_token}&id=${entry.id}`;
+        const appUrl = getAppUrl();
+        
+        const confirmationUrl = `${appUrl}/api/confirm?token=${entry.confirmation_token}&id=${entry.id}`;
         
         // Resend configuration
         // IMPORTANT: Use the verified subdomain (waitlist.hyperionkit.xyz) not the root domain
         // Based on your DNS records, waitlist.hyperionkit.xyz is verified
         const fromEmail = process.env.RESEND_FROM_EMAIL || 'team@waitlist.hyperionkit.xyz';
         const testEmail = process.env.RESEND_TEST_EMAIL || 'hyperkitdev@gmail.com';
-        const isProduction = process.env.NODE_ENV === 'production';
+        const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
         
         // In development/testing mode, Resend only allows sending to verified email
         // In production with verified domain, you can send to any email
@@ -489,13 +528,23 @@ export async function POST(request: NextRequest) {
           .eq('id', entry.id);
 
         // Log email send (optional)
-        await supabase
-          .from('email_logs')
-          .insert({
-            waitlist_entry_id: entry.id,
-            email_type: 'confirmation',
-            status: 'sent',
-          });
+        try {
+          const { error: logError } = await supabase
+            .from('email_logs')
+            .insert({
+              waitlist_entry_id: entry.id,
+              email_type: 'confirmation',
+              status: 'sent',
+            });
+          
+          if (logError) {
+            console.error('Failed to log email send:', logError);
+            // Don't fail the request, just log the error
+          }
+        } catch (logErr) {
+          console.error('Error logging email send:', logErr);
+          // Don't fail the request, just log the error
+        }
       } catch (emailError: any) {
         console.error('Email sending error:', emailError);
         
@@ -506,14 +555,22 @@ export async function POST(request: NextRequest) {
         }
         
         // Log failed email attempt
-        await supabase
-          .from('email_logs')
-          .insert({
-            waitlist_entry_id: entry.id,
-            email_type: 'confirmation',
-            status: 'failed',
-            error_message: emailError instanceof Error ? emailError.message : 'Unknown error',
-          });
+        try {
+          const { error: logError } = await supabase
+            .from('email_logs')
+            .insert({
+              waitlist_entry_id: entry.id,
+              email_type: 'confirmation',
+              status: 'failed',
+              error_message: emailError instanceof Error ? emailError.message : 'Unknown error',
+            });
+          
+          if (logError) {
+            console.error('Failed to log email failure:', logError);
+          }
+        } catch (logErr) {
+          console.error('Error logging email failure:', logErr);
+        }
         // Don't fail the request if email fails, but log it
       }
     } else if (!resend) {
