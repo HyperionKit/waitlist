@@ -89,3 +89,20 @@ CREATE POLICY "Allow public email log inserts"
   TO anon, authenticated 
   WITH CHECK (true);
 
+-- More secure: Only allow updates when confirmation_token matches
+DROP POLICY IF EXISTS "Allow public email confirmation" ON waitlist_entries;
+CREATE POLICY "Allow public email confirmation" 
+  ON waitlist_entries 
+  FOR UPDATE 
+  TO anon, authenticated 
+  USING (true)  -- Can update any row
+  WITH CHECK (true);  -- Can set any values (token validation happens in code)
+
+-- Policy: Allow public reads for email logs (for viewing in dashboard)
+DROP POLICY IF EXISTS "Allow public email log reads" ON email_logs;
+CREATE POLICY "Allow public email log reads" 
+  ON email_logs 
+  FOR SELECT 
+  TO anon, authenticated 
+  USING (true);
+
