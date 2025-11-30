@@ -28,7 +28,7 @@ export default function Web3Hero() {
     try {
       if (typeof window !== 'undefined' && window.ethereum) {
         const ethereum = window.ethereum;
-        const accounts = await ethereum.request({ method: 'eth_accounts' });
+        const accounts = await ethereum.request({ method: 'eth_accounts' }) as string[];
         if (accounts.length > 0) {
           setWalletAddress(accounts[0]);
           setIsWalletConnected(true);
@@ -52,14 +52,14 @@ export default function Web3Hero() {
       const ethereum = window.ethereum;
       const accounts = await ethereum.request({
         method: 'eth_requestAccounts',
-      });
+      }) as string[];
 
-      const chainId = await ethereum.request({ method: 'eth_chainId' });
+      const chainId = await ethereum.request({ method: 'eth_chainId' }) as string;
       
       setWalletAddress(accounts[0]);
       setIsWalletConnected(true);
       
-      ethereum.on('accountsChanged', (accounts) => {
+      ethereum.on('accountsChanged', (accounts: string[]) => {
         if (accounts.length === 0) {
           setIsWalletConnected(false);
           setWalletAddress('');
@@ -71,7 +71,7 @@ export default function Web3Hero() {
       ethereum.on('chainChanged', () => {
         window.location.reload();
       });
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Failed to connect wallet');
       console.error('Error connecting wallet:', err);
     } finally {
@@ -141,7 +141,7 @@ export default function Web3Hero() {
     }
   };
 
-  const formatAddress = (address) => {
+  const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 

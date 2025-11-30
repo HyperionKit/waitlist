@@ -12,9 +12,10 @@ export async function GET(request: NextRequest) {
   const id = searchParams.get('id');
 
   if (!token || !id) {
-    // Redirect to error page or show error
+    // Get base URL for proper redirect
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
     return NextResponse.redirect(
-      new URL('/confirmed?error=missing_params', request.url)
+      new URL('/confirmed?error=missing_params', baseUrl)
     );
   }
 
@@ -34,20 +35,24 @@ export async function GET(request: NextRequest) {
 
     if (error || !data) {
       console.error('Confirmation error:', error);
-      // Redirect to error page
+      // Get base URL for proper redirect
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
       return NextResponse.redirect(
-        new URL('/confirmed?error=invalid_token', request.url)
+        new URL('/confirmed?error=invalid_token', baseUrl)
       );
     }
 
+    // Get base URL for proper redirect
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
     // Redirect to success page
     return NextResponse.redirect(
-      new URL('/confirmed?success=true', request.url)
+      new URL('/confirmed?success=true', baseUrl)
     );
   } catch (error) {
     console.error('Unexpected confirmation error:', error);
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
     return NextResponse.redirect(
-      new URL('/confirmed?error=server_error', request.url)
+      new URL('/confirmed?error=server_error', baseUrl)
     );
   }
 }
