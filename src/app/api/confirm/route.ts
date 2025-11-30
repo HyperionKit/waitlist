@@ -20,6 +20,43 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    // First, check if the entry exists and get the token
+    const { data: entryData, error: fetchError } = await supabase
+      .from('waitlist_entries')
+      .select('id, confirmation_token, email_confirmed')
+      .eq('id', id)
+      .single();
+
+    if (fetchError || !entryData) {
+      console.error('Entry not found:', { id, error: fetchError });
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
+      return NextResponse.redirect(
+        new URL('/confirmed?error=invalid_token', baseUrl)
+      );
+    }
+
+    // Check if already confirmed
+    if (entryData.email_confirmed) {
+      console.log('Email already confirmed:', id);
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
+      return NextResponse.redirect(
+        new URL('/confirmed?success=true&already_confirmed=true', baseUrl)
+      );
+    }
+
+    // Verify token matches
+    if (entryData.confirmation_token !== token) {
+      console.error('Token mismatch:', {
+        provided: token,
+        expected: entryData.confirmation_token,
+        id
+      });
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
+      return NextResponse.redirect(
+        new URL('/confirmed?error=invalid_token', baseUrl)
+      );
+    }
+
     // Verify token and confirm email
     const { data, error } = await supabase
       .from('waitlist_entries')
@@ -34,7 +71,7 @@ export async function GET(request: NextRequest) {
       .single();
 
     if (error || !data) {
-      console.error('Confirmation error:', error);
+      console.error('Confirmation update error:', { error, id, token });
       // Get base URL for proper redirect
       const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
       return NextResponse.redirect(

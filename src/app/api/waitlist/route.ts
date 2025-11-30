@@ -406,13 +406,22 @@ export async function POST(request: NextRequest) {
         status: 'pending',
         email_confirmed: false,
       })
-      .select()
+      .select('id, email, wallet_address, confirmation_token, status, email_confirmed, position')
       .single();
 
     if (insertError) {
       console.error('Database error:', insertError);
       return NextResponse.json(
         { error: 'Failed to register. Please try again.' },
+        { status: 500 }
+      );
+    }
+
+    // Validate that confirmation_token exists
+    if (!entry?.confirmation_token) {
+      console.error('Confirmation token missing from entry:', entry);
+      return NextResponse.json(
+        { error: 'Failed to generate confirmation token. Please try again.' },
         { status: 500 }
       );
     }
