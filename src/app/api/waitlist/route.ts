@@ -433,6 +433,16 @@ export async function POST(request: NextRequest) {
         // In production with verified domain, you can send to any email
         const recipientEmail = isProduction ? entry.email : testEmail;
         
+        // Add this logging
+        console.log('[EMAIL DEBUG]', {
+          isProduction,
+          NODE_ENV: process.env.NODE_ENV,
+          userEmail: entry.email,
+          recipientEmail,
+          fromEmail,
+          confirmationUrl
+        });
+        
         // Log if we're using test email in development
         if (!isProduction && entry.email !== testEmail) {
           console.log(`[DEV MODE] Email would be sent to ${entry.email}, but redirecting to test email: ${testEmail}`);
