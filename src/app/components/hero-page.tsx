@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Mail, Wallet, ArrowRight } from 'lucide-react';
+import HowItWorks from './how-it-works';
+import SuccessModal from './success-modal';
 
 export default function Web3Hero() {
   const [email, setEmail] = useState('');
@@ -12,6 +14,8 @@ export default function Web3Hero() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState('');
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -122,17 +126,11 @@ export default function Web3Hero() {
       // Success
       setSuccess(true);
       setError('');
+      setSubmittedEmail(email.trim());
+      setShowModal(true);
       
-      // Show success message
-      setTimeout(() => {
-        alert(`🎉 Spot secured!\n\nEmail: ${email}\nWallet: ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}\n\nCheck your email for confirmation!`);
-        
-        // Optional: Reset form after success
-        setEmail('');
-        setIsWalletConnected(false);
-        setWalletAddress('');
-        setSuccess(false);
-      }, 100);
+      // Reset form after showing modal
+      setEmail('');
     } catch (err) {
       setError('Network error. Please check your connection and try again.');
       console.error('Error securing spot:', err);
@@ -143,6 +141,13 @@ export default function Web3Hero() {
 
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
+  const handleViewSteps = () => {
+    const element = document.getElementById('how-it-works');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   return (
@@ -168,7 +173,7 @@ export default function Web3Hero() {
       <main className="relative z-10 max-w-7xl mx-auto px-6 py-20 flex flex-col items-center text-center">
         
         {/* Logo Area with Float Animation */}
-        <div className="mb-12 animate-[float_6s_ease-in-out_infinite]">
+        <div className="mb-12 animate-float">
           <div className="relative group">
             <div className="absolute -inset-4 bg-purple-600/30 rounded-full blur-xl opacity-50 group-hover:opacity-100 transition duration-700"></div>
             <div className="relative w-20 h-20 bg-black/80 backdrop-blur-xl rounded-2xl border border-white/10 flex items-center justify-center shadow-2xl ring-1 ring-white/5 p-4">
@@ -197,13 +202,6 @@ export default function Web3Hero() {
         <p className="text-lg md:text-xl text-slate-400/90 mb-12 max-w-2xl leading-relaxed font-light">
           Experience Hyperkit Studio before anyone else. Join the waitlist for early access to the next generation of on-chain builder tools.
         </p>
-
-        {/* Success message */}
-        {success && (
-          <div className="w-full max-w-md mb-4 bg-green-500/10 border border-green-500/30 rounded-xl p-4">
-            <p className="text-green-400 text-sm">✅ Spot secured! Check your email for confirmation.</p>
-          </div>
-        )}
 
         {/* Error message */}
         {error && (
@@ -292,18 +290,22 @@ export default function Web3Hero() {
             <span>Limited spots available for Beta Wave 1</span>
           </div>
         </div>
+
+        {/* How It Works Section */}
+        <HowItWorks />
       </main>
 
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-      `}</style>
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={showModal}
+        onClose={() => {
+          setShowModal(false);
+          setSuccess(false);
+        }}
+        email={submittedEmail || undefined}
+        walletAddress={walletAddress ? formatAddress(walletAddress) : undefined}
+        onViewSteps={handleViewSteps}
+      />
     </div>
   );
 }
