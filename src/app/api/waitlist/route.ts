@@ -124,12 +124,15 @@ function generateConfirmationEmail(
 
                             <!-- Heading -->
                             <h1 style="font-size: 30px; font-weight: 600; letter-spacing: -0.025em; color: #ffffff; margin: 0 0 16px 0; padding: 0; font-family: Arial, Helvetica, sans-serif; line-height: 1.2;">
-                                You're on the list
+                                Confirm your spot
                             </h1>
                             
                             <!-- Description -->
-                            <p style="font-size: 16px; color: #94a3b8; line-height: 1.625; font-weight: 400; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;">
-                                We've reserved your spot for the upcoming beta release. Check your details below to ensure everything is correct.
+                            <p style="font-size: 16px; color: #94a3b8; line-height: 1.625; font-weight: 400; margin: 0 0 8px 0; padding: 0; font-family: Arial, Helvetica, sans-serif;">
+                                You've signed up for the Hyperkit waitlist! To secure your spot, please confirm your email address by clicking the button below.
+                            </p>
+                            <p style="font-size: 14px; color: #64748b; line-height: 1.5; font-weight: 400; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;">
+                                Your spot will be reserved once you confirm your email.
                             </p>
                         </td>
                     </tr>
@@ -170,7 +173,7 @@ function generateConfirmationEmail(
                                                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="32" height="32" style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 6px;">
                                                         <tr>
                                                             <td align="center" valign="middle">
-                                                                <img src="${iconUrls.email}" alt="Email" width="16" height="16" style="display: block; border: 0; outline: none; text-decoration: none;">
+                                                                <img src="${iconUrls.email}" alt="Email" width="16" height="16" style="display: block; border: 0; outline: none; text-decoration: none; max-width: 16px; height: auto;">
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -200,7 +203,7 @@ function generateConfirmationEmail(
                                                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="32" height="32" style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 6px;">
                                                         <tr>
                                                             <td align="center" valign="middle">
-                                                                <img src="${iconUrls.wallet}" alt="Wallet" width="16" height="16" style="display: block; border: 0; outline: none; text-decoration: none;">
+                                                                <img src="${iconUrls.wallet}" alt="Wallet" width="16" height="16" style="display: block; border: 0; outline: none; text-decoration: none; max-width: 16px; height: auto;">
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -238,12 +241,12 @@ function generateConfirmationEmail(
                                     <!--[if mso]>
                                     <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${trackedConfirmationUrl}" style="height:48px;v-text-anchor:middle;width:200px;" arcsize="50%" stroke="f" fillcolor="#6366f1">
                                         <w:anchorlock/>
-                                        <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:14px;font-weight:500;">Confirm Email Address</center>
+                                        <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:14px;font-weight:500;">Confirm & Secure Your Spot</center>
                                     </v:roundrect>
                                     <![endif]-->
                                     <!--[if !mso]><!-->
                                     <a href="${trackedConfirmationUrl}" target="_blank" style="display: inline-block; background-color: #6366f1; color: #ffffff; padding: 14px 32px; border-radius: 8px; font-weight: 500; font-size: 14px; letter-spacing: 0.05em; text-align: center; text-decoration: none; font-family: Arial, Helvetica, sans-serif; line-height: 1.2;">
-                                        Confirm Email Address
+                                        Confirm & Secure Your Spot
                                     </a>
                                     <!--<![endif]-->
                                     </td>
@@ -262,19 +265,19 @@ function generateConfirmationEmail(
                                     <!-- X/Twitter Icon -->
                                     <td style="padding: 0 12px;">
                                         <a href="${socialLinks.x}" target="_blank" style="text-decoration: none; display: inline-block;">
-                                            <img src="${socialIcons.x}" alt="X (Twitter)" width="24" height="24" style="display: block; border: 0; outline: none; text-decoration: none; opacity: 0.7;">
+                                            <img src="${socialIcons.x}" alt="X (Twitter)" width="24" height="24" style="display: block; border: 0; outline: none; text-decoration: none; opacity: 0.7; max-width: 24px; height: auto;">
                                         </a>
                                     </td>
                                     <!-- Discord Icon -->
                                     <td style="padding: 0 12px;">
                                         <a href="${socialLinks.discord}" target="_blank" style="text-decoration: none; display: inline-block;">
-                                            <img src="${socialIcons.discord}" alt="Discord" width="24" height="24" style="display: block; border: 0; outline: none; text-decoration: none; opacity: 0.7;">
+                                            <img src="${socialIcons.discord}" alt="Discord" width="24" height="24" style="display: block; border: 0; outline: none; text-decoration: none; opacity: 0.7; max-width: 24px; height: auto;">
                                         </a>
                                     </td>
                                     <!-- Telegram Icon -->
                                     <td style="padding: 0 12px;">
                                         <a href="${socialLinks.telegram}" target="_blank" style="text-decoration: none; display: inline-block;">
-                                            <img src="${socialIcons.telegram}" alt="Telegram" width="24" height="24" style="display: block; border: 0; outline: none; text-decoration: none; opacity: 0.7;">
+                                            <img src="${socialIcons.telegram}" alt="Telegram" width="24" height="24" style="display: block; border: 0; outline: none; text-decoration: none; opacity: 0.7; max-width: 24px; height: auto;">
                                         </a>
                                     </td>
                                 </tr>
@@ -489,7 +492,7 @@ export async function POST(request: NextRequest) {
         await resend.emails.send({
           from: fromEmail,
           to: recipientEmail,
-          subject: '🎉 Your Spot is Secured - Hyperkit Waitlist Confirmation',
+          subject: '🎉 Confirm your spot - Hyperkit Waitlist Confirmation',
           html: generateConfirmationEmail(entry.email, entry.wallet_address, confirmationUrl, entry.id),
           // Text version for better deliverability
           text: generateConfirmationEmailText(entry.email, entry.wallet_address, confirmationUrl),
