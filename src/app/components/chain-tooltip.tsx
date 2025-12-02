@@ -53,7 +53,7 @@ export default function ChainTooltip({ chain, children }: ChainTooltipProps) {
           ref={tooltipRef}
           className={`absolute ${position === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'} left-1/2 -translate-x-1/2 w-64 p-3 bg-slate-900 border border-white/20 rounded-lg shadow-xl z-50 text-xs text-slate-300 pointer-events-none`}
         >
-          <p>{chainInfo[chain]}</p>
+          <span>{chainInfo[chain]}</span>
           <div
             className={`absolute ${position === 'top' ? 'top-full -mt-1' : 'bottom-full -mb-1'} left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-900 border-r border-b border-white/20 rotate-45`}
           ></div>

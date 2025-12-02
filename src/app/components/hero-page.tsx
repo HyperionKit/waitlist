@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Mail, Wallet, ArrowRight } from 'lucide-react';
 import HowItWorks from './how-it-works';
 import ChainTooltip from './chain-tooltip';
+import WaitlistStats from './waitlist-stats';
 import SuccessModal from './success-modal';
 
 export default function Web3Hero() {
@@ -295,6 +296,9 @@ export default function Web3Hero() {
             <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)] animate-pulse"></div>
             <span>Limited spots available for Beta Wave 1</span>
           </div>
+
+          {/* Waitlist Stats */}
+          <WaitlistStats />
         </div>
 
         {/* How It Works Section */}
