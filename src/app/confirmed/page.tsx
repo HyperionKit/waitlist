@@ -39,16 +39,11 @@ function ConfirmedContent() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-black selection:bg-purple-500/30">
-      {/* Background Layers */}
+      {/* Simplified Background Layers - Optimized for Performance */}
       <div className="fixed inset-0 overflow-hidden -z-10 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-[#050507] via-[#0a0a0c] to-[#0f0720]"></div>
-        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[100%] h-[800px] bg-purple-900/20 blur-[120px] rounded-full mix-blend-screen opacity-60"></div>
-        <div 
-          className="absolute inset-0 opacity-50 mix-blend-overlay"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E")`
-          }}
-        ></div>
+        {/* Reduced blur intensity for better performance */}
+        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[100%] h-[800px] bg-purple-900/20 blur-[80px] rounded-full mix-blend-screen opacity-40"></div>
       </div>
 
       <main className="relative z-10 min-h-screen flex items-center justify-center px-6 py-20">
@@ -63,6 +58,7 @@ function ConfirmedContent() {
                   alt="Hyperkit Logo"
                   width={40}
                   height={40}
+                  priority
                   className="w-full h-full object-contain"
                 />
               </div>

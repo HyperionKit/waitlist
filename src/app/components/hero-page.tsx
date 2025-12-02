@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Mail, Wallet, ArrowRight } from 'lucide-react';
 import HowItWorks from './how-it-works';
+import ChainTooltip from './chain-tooltip';
 import SuccessModal from './success-modal';
 
 export default function Web3Hero() {
@@ -177,13 +178,14 @@ export default function Web3Hero() {
           <div className="relative group">
             <div className="absolute -inset-4 bg-purple-600/30 rounded-full blur-xl opacity-50 group-hover:opacity-100 transition duration-700"></div>
             <div className="relative w-20 h-20 bg-black/80 backdrop-blur-xl rounded-2xl border border-white/10 flex items-center justify-center shadow-2xl ring-1 ring-white/5 p-4">
-              <Image
-                src="/logo/brand/hyperkit/Hyperkit-logo.png"
-                alt="Hyperkit Logo"
-                width={56}
-                height={56}
-                className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"
-              />
+                <Image
+                  src="/logo/brand/hyperkit/Hyperkit-logo.png"
+                  alt="Hyperkit Logo"
+                  width={56}
+                  height={56}
+                  priority
+                  className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"
+                />
             </div>
           </div>
         </div>
@@ -191,16 +193,20 @@ export default function Web3Hero() {
         {/* Hero Text */}
         <h1 className="text-5xl md:text-7xl font-semibold tracking-tight text-white mb-6 max-w-5xl">
           <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/50">
-            Build the future of
+            AI Studio to Build and Ship
           </span>
           <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-200 via-purple-400 to-purple-200 drop-shadow-[0_0_30px_rgba(168,85,247,0.4)]">
-            Web3 AI.
+            Secure Multi-Chain DeFi Apps
           </span>
         </h1>
         
         <p className="text-lg md:text-xl text-slate-400/90 mb-12 max-w-2xl leading-relaxed font-light">
-          Experience Hyperkit Studio before anyone else. Join the waitlist for early access to the next generation of on-chain builder tools.
+          Generate, audit, test, and deploy smart contracts fast with Hyperkit Studio. Start on{' '}
+          <ChainTooltip chain="hyperion">Hyperion</ChainTooltip> testnet and extend to{' '}
+          <ChainTooltip chain="metis">Metis</ChainTooltip>,{' '}
+          <ChainTooltip chain="mantle">Mantle</ChainTooltip>,{' '}
+          <ChainTooltip chain="avalanche">Avalanche</ChainTooltip>, and more.
         </p>
 
         {/* Error message */}

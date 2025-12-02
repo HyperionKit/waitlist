@@ -1,5 +1,6 @@
 import React from 'react';
 import { Zap, Bot, BadgeCheck, Percent, Users, Map, Coins, Share2, Network } from 'lucide-react';
+import ChainTooltip from './chain-tooltip';
 
 const WaitlistPerks = () => {
   const perks = [
@@ -110,7 +111,14 @@ const WaitlistPerks = () => {
     {
       icon: Network,
       title: "Integrations",
-      description: "First to deploy on Hyperion, Metis, Mantle and Avalanche using our advanced testnet tools.",
+      description: (
+        <>
+          First to deploy on <ChainTooltip chain="hyperion">Hyperion</ChainTooltip>,{' '}
+          <ChainTooltip chain="metis">Metis</ChainTooltip>,{' '}
+          <ChainTooltip chain="mantle">Mantle</ChainTooltip> and{' '}
+          <ChainTooltip chain="avalanche">Avalanche</ChainTooltip> using our advanced testnet tools.
+        </>
+      ),
       color: "indigo",
       iconColor: "text-indigo-400",
       iconBg: "bg-indigo-500/10",
@@ -156,9 +164,9 @@ const WaitlistPerks = () => {
                 <h3 className="text-xl font-medium text-white mb-3 tracking-tight">
                   {perk.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-slate-400">
+                <div className="text-sm leading-relaxed text-slate-400">
                   {perk.description}
-                </p>
+                </div>
               </div>
             </div>
           );

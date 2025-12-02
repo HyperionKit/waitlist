@@ -2,13 +2,23 @@
 
 import React from 'react';
 import { Wallet2, MailCheck, TrendingUp } from 'lucide-react';
+import ChainTooltip from './chain-tooltip';
 
 const steps = [
   {
     icon: Wallet2,
     number: '01',
     title: 'Connect wallet & email',
-    description: 'Click "Join waitlist". Connect a supported wallet (Hyperion, Mantle, Base, Avalanche ready) and enter your email address.',
+    description: (
+      <>
+        Click "Join waitlist" and connect a supported wallet to register. Hyperkit supports early access on the{' '}
+        <ChainTooltip chain="hyperion">Hyperion</ChainTooltip> testnet with planned support for{' '}
+        <ChainTooltip chain="metis">Metis</ChainTooltip>,{' '}
+        <ChainTooltip chain="mantle">Mantle</ChainTooltip>,{' '}
+        <ChainTooltip chain="avalanche">Avalanche</ChainTooltip>, and{' '}
+        <ChainTooltip chain="base">Base</ChainTooltip> networks.
+      </>
+    ),
     color: 'purple',
     iconColor: 'text-purple-400',
     borderColor: 'group-hover:border-purple-500/50',
@@ -63,9 +73,9 @@ export default function HowItWorks() {
                 </div>
               </div>
               <h3 className="text-lg font-medium text-white mb-2">{step.title}</h3>
-              <p className="text-sm text-slate-400 max-w-[280px] leading-relaxed">
+              <div className="text-sm text-slate-400 max-w-[280px] leading-relaxed">
                 {step.description}
-              </p>
+              </div>
             </div>
           );
         })}
